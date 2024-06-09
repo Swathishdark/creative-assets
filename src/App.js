@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 
 const baseURL = process.env.REACT_APP_DIRECTUS_URL;
@@ -59,11 +59,7 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    filterData();
-  }, [currentOption, filterTag, data]);
-
-  const filterData = () => {
+  const filterData = useCallback(() => {
     let filtered = data;
     if (currentOption !== 'all') {
       filtered = filtered.filter(item => item.program.includes(currentOption));
@@ -72,7 +68,11 @@ function App() {
       filtered = filtered.filter(item => item.tags.includes(filterTag));
     }
     setFilteredData(filtered);
-  };
+  }, [currentOption, filterTag, data]);
+
+  useEffect(() => {
+    filterData();
+  }, [currentOption, filterTag, data, filterData]);
 
   const handleOptionChange = (option) => {
     setCurrentOption(option);
