@@ -10,6 +10,11 @@ module.exports = async (req, res) => {
   console.log('Directus Username:', directusUsername);
   // Do not log the password for security reasons
 
+  if (!directusApiEndpoint || !directusUsername || !directusPassword) {
+    console.error('Missing environment variables');
+    return res.status(500).json({ error: 'Missing environment variables' });
+  }
+
   try {
     const response = await fetch(`${directusApiEndpoint}/auth/login`, {
       method: 'POST',
