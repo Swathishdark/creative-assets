@@ -1,0 +1,273 @@
+body {
+  background-color: none;
+  margin: 0;
+  padding: 0;
+  font-family: 'Rubik', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center content */
+  height: 100vh; /* Full viewport height */
+}
+
+#options, #filterContainer {
+  position: absolute; /* Positioned absolutely to allow for initial centering */
+  top: 25%; /* Move buttons higher up */
+  width: 100%; /* Ensure full width */
+  transform: translateY(0); /* No need to adjust for initial centering */
+  transition: top 0.3s ease-in-out, transform 0.3s ease-in-out; /* Smooth transition for moving the buttons */
+  text-align: center;
+}
+
+#options button {
+  background-color: #02BF91;
+  color: #004246;
+  border: none;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+#options button:hover {
+  background-color: #29d3b2;
+  transform: scale(1.05);
+}
+
+#options button.active {
+  background-color: #2DF8C5; /* Change this color to your preference */
+  color: #003B3F; /* Change text color if needed */
+}
+
+#filterContainer {
+  margin-top: 20px; /* Add margin to create space between buttons and filter */
+  text-align: center;
+}
+
+#tagFilter {
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 2px solid none; /* Match the button color */
+  background-color: white;
+  cursor: pointer;
+  outline: none; /* Remove focus outline */
+  transition: all 0.3s ease;
+  font-family: 'Rubik', sans-serif; /* Ensure Rubik font is applied */
+  margin-top: 20px;
+}
+
+#tagFilter:hover {
+  background-color: #f0f0f0; /* Light grey for hover */
+  border-color: #02BF91; /* Brighter green on hover */
+}
+
+#tagFilter option:selected {
+  background-color: #cce8e4; /* A lighter shade for selected option */
+}
+
+#resetFilter {
+  display: inline-block; /* Ensure it's treated as an inline-level block container */
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: bold; /* Make text bold */
+  border-radius: 5px;
+  border: 2px solid none;  
+  background-color: #fff;
+  color: black;
+  cursor: pointer;
+  font-family: 'Rubik', sans-serif;
+  margin-left: 10px; /* Space between filter and reset button */
+  text-shadow: none; /* Remove any text shadow if present */
+  box-shadow: none; /* Remove any box shadow if present */
+  transition: background-color 0.3s;
+}
+
+#resetFilter:hover {
+  background-color: none; /* Darker shade for hover effect */
+}
+
+#tableContainer {
+  margin-top: 5px;
+  padding-left: 0px; /* Add 10px padding on the left */
+  padding-right: 8px;
+  background-color: white;
+  border-radius: 10px;
+  max-height: 400px;
+  overflow: auto;
+}
+
+#tableContainer::-webkit-scrollbar {
+  width: 10px;
+}
+
+#tableContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#tableContainer::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+#tableContainer::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+table {
+  width: 100%;
+  margin-bottom: 0;
+  font-size: 12px;
+  border-collapse: separate; /* Use separate border collapsing */
+  border-spacing: 0; /* Remove spacing between cells */
+  border-radius: 10px; 
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px 15px;
+  text-align: left;
+  border-radius: 10px; /* Rounded corners */
+}
+
+th {
+  background-image: linear-gradient(to right,#009378, #004246);
+  color: white;
+  font-weight: normal;
+  border-radius: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+  border-radius: 10px;
+}
+
+tr:last-child .tooltip {
+  top: auto; /* Align top edge of tooltip with the bottom edge of the cell */
+  bottom: 100%; /* Move tooltip above the cell */
+  transform: translateX(-50%) translateY(0); /* Adjust the transformation */
+}
+
+td img {
+  width: 130px;
+  height: auto;
+  cursor: pointer;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+  margin: 10% auto;
+  display: block;
+  width: 35%;
+  max-width: 700px;
+  border-radius: 10px;
+}
+
+.modal-content:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.hover-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.tooltip {
+  display: none;
+  position: absolute;
+  background-color: black;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  z-index: 1;
+}
+
+.hover-container:hover .tooltip {
+  display: block;
+}
+
+.copy-content:hover .tooltip {
+  display: block;
+}
+
+.copy-content .tooltip, .hover-container .tooltip {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.copy-content {
+  cursor: pointer;
+  position: relative;
+}
+
+.copy-content:hover {
+  background-color: #f0f0f0; /* Hover effect */
+}
+
+.copy-content .tooltip {
+  display: none;
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.copy-content:hover .tooltip {
+  display: block;
+}
+
+.modal-download-button {
+  display: none; /* Initially hidden, shown when the modal is open */
+  position: absolute;
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust for exact center alignment */
+  margin-top: -8%; /* Position below the image, adjust the value as needed */
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Green background */
+  color: white; /* White text */
+  border-radius: 5px; /* Rounded corners */
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer; /* Cursor changes to a hand symbol when hovered over */
+  border: 2px solid transparent; /* Transparent border */
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+}
+
+.modal-download-button:hover {
+  background-color: white; /* White background on hover */
+  color: #4CAF50; /* Green text on hover */
+  border-color: #4CAF50; /* Green border on hover */
+}
