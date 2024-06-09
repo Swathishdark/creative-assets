@@ -9,6 +9,7 @@ function App() {
   const [currentOption, setCurrentOption] = useState('all');
   const [filterTag, setFilterTag] = useState('all');
   const [modalData, setModalData] = useState({ isOpen: false, imageSrc: '', imageName: '' });
+  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,7 +91,8 @@ function App() {
     setModalData({ isOpen: false, imageSrc: '', imageName: '' });
   };
 
-  const handleCopyContent = (content, contentName) => {
+  const handleCopyContent = (e, content, contentName) => {
+    e.preventDefault();
     const el = document.createElement('div');
     el.innerHTML = content;
     el.contentEditable = 'true';
@@ -116,10 +118,21 @@ function App() {
     e.preventDefault();
     const link = document.createElement('a');
     link.href = imageSrc;
-    link.download = `${imageName}.jpg`;
+    link.setAttribute('download', `${imageName}.jpg`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const handleMouseOver = (e) => {
+    const tooltip = e.target.querySelector('.tooltip');
+    if (tooltip) {
+      const rect = e.target.getBoundingClientRect();
+      setTooltipPosition({
+        top: e.clientY,
+        left: e.clientX,
+      });
+    }
   };
 
   return (
@@ -156,13 +169,13 @@ function App() {
           <tbody>
             {filteredData.map((row, index) => (
               <tr key={index}>
-                <td className="hover-container">
+                <td className="hover-container" onMouseMove={handleMouseOver}>
                   <img src={row.image} alt={row.imageName} onClick={() => showModal(row.image, row.imageName)} />
-                  <span className="tooltip">Click to view</span>
+                  <span className="tooltip" style={{ top: tooltipPosition.top, left: tooltipPosition.left }}>Click to view</span>
                 </td>
-                <td className="copy-content" onClick={() => handleCopyContent(row.content, row.contentName)}>
+                <td className="copy-content" onMouseMove={handleMouseOver} onClick={(e) => handleCopyContent(e, row.content, row.contentName)}>
                   <span className="content-text" data-content-name={row.contentName} dangerouslySetInnerHTML={{ __html: row.content }}></span>
-                  <span className="tooltip">Click to copy</span>
+                  <span className="tooltip" style={{ top: tooltipPosition.top, left: tooltipPosition.left }}>Click to copy</span>
                 </td>
                 <td>{row.tags.join(', ')}</td>
               </tr>
