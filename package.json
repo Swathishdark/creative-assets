@@ -6,7 +6,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "axios": "^1.2.0"
+    "axios": "^1.2.0",
+    "node-fetch": "^2.6.1"  // Added node-fetch dependency
   },
   "scripts": {
     "start": "react-scripts start",
