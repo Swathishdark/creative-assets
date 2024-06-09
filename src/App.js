@@ -161,7 +161,7 @@ function App() {
         </table>
       </div>
       {modalData.isOpen && (
-        <div id="imageModal" className="modal" onClick={closeModal}>
+        <div id="imageModal" className="modal open" onClick={closeModal}>
           <span id="closeModal" className="close" onClick={closeModal}>&times;</span>
           <a id="downloadLink" href={modalData.imageSrc} download={modalData.imageName}>
             <img className="modal-content" id="modalImage" src={modalData.imageSrc} alt={modalData.imageName} />
