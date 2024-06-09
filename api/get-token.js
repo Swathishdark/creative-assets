@@ -5,6 +5,11 @@ const directusUsername = process.env.DIRECTUS_USERNAME;
 const directusPassword = process.env.DIRECTUS_PASSWORD;
 
 module.exports = async (req, res) => {
+  console.log('Received request to get token');
+  console.log('Directus API Endpoint:', directusApiEndpoint);
+  console.log('Directus Username:', directusUsername);
+  console.log('Directus Password:', '*****'); // Don't log the actual password
+
   try {
     const response = await fetch(`${directusApiEndpoint}/auth/login`, {
       method: 'POST',
@@ -17,14 +22,19 @@ module.exports = async (req, res) => {
       }),
     });
 
+    console.log('Response status:', response.status);
+    console.log('Response headers:', response.headers.raw());
+
     if (!response.ok) {
-      throw new Error(`Failed to login: ${response.statusText}`);
+      const errorText = await response.text();
+      throw new Error(`Failed to login: ${response.statusText} - ${errorText}`);
     }
 
     const data = await response.json();
+    console.log('Token received:', data.data.access_token);
     res.status(200).json({ token: data.data.access_token });
   } catch (error) {
-    console.error('Error fetching access token:', error);
+    console.error('Error fetching access token:', error.message);
     res.status(500).json({ error: error.message });
   }
 };
