@@ -11,13 +11,13 @@ body {
 
 #options, #filterContainer {
   position: absolute;
-  top: 10%; /* Adjusted top position */
+  top: 10%;
   width: 100%;
   text-align: center;
 }
 
 #options button {
-  background-color: #02BF91; /* Corrected background color */
+  background-color: #02BF91;
   color: #004246;
   border: none;
   padding: 10px 20px;
@@ -117,6 +117,7 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   border-radius: 10px;
+  table-layout: fixed;
 }
 
 th, td {
@@ -131,6 +132,9 @@ th {
   color: white;
   font-weight: normal;
   border-radius: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 tr:nth-child(even) {
@@ -192,6 +196,8 @@ td img {
   border-radius: 5px;
   font-size: 14px;
   z-index: 1;
+  transform: translate(-50%, -150%);
+  pointer-events: none;
 }
 
 .hover-container:hover .tooltip {
