@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
-const baseURL = process.env.REACT_APP_DIRECTUS_URL; // Using env variable for Directus URL
-const email = process.env.REACT_APP_DIRECTUS_EMAIL; // Using env variable for email
-const password = process.env.REACT_APP_DIRECTUS_PASSWORD; // Using env variable for password
+const baseURL = process.env.REACT_APP_DIRECTUS_API_ENDPOINT; // Using env variable for Directus URL
 
 function App() {
   const [currentOption, setCurrentOption] = useState('FSD');
@@ -27,8 +25,13 @@ function App() {
 
   const getAuthToken = async () => {
     try {
-      const response = await axios.post(`${baseURL}/auth/login`, { email, password });
-      return response.data.data.access_token;
+      const response = await fetch('/api/get-token');
+      const data = await response.json();
+      if (response.ok) {
+        return data.token;
+      } else {
+        throw new Error(data.error);
+      }
     } catch (error) {
       console.error('Error obtaining token:', error);
       return null;
@@ -44,19 +47,9 @@ function App() {
     }
 
     try {
-      const response = await axios.get(`${baseURL}/items/your-collection-name`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          filter: {
-            program_name: {
-              _contains: programFilter,
-            },
-          },
-        },
-      });
-      return response.data.data.map(item => ({
+      const response = await fetch(`/api/fetch-content?token=${token}&program=${programFilter}`);
+      const data = await response.json();
+      return data.map(item => ({
         imageName: item.asset_image,
         image: `${baseURL}/assets/${item.asset_image}`,
         contentName: item.asset_image,
