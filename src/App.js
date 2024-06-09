@@ -15,13 +15,13 @@ function App() {
     const fetchData = async () => {
       const token = await getAuthToken();
       if (token) {
-        const result = await getDataForOption(currentOption, token);
+        const result = await getData(token);
         setData(result);
         setFilteredData(result);
       }
     };
     fetchData();
-  }, [currentOption]);
+  }, []);
 
   const getAuthToken = async () => {
     try {
@@ -38,16 +38,9 @@ function App() {
     }
   };
 
-  const getDataForOption = async (option, token) => {
-    let programFilter;
-    if (option === 'FSD') {
-      programFilter = 'Fellowship Program in Software Development';
-    } else if (option === 'QA') {
-      programFilter = 'Fellowship Program in QA Automation';
-    }
-
+  const getData = async (token) => {
     try {
-      const response = await fetch(`/api/fetch-content?token=${token}&program=${programFilter}`);
+      const response = await fetch(`/api/fetch-content?token=${token}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -58,11 +51,27 @@ function App() {
         contentName: item.asset_image,
         content: item.asset_message.replace(/\r\n/g, '<br>'),
         tags: item.transition_type,
+        program: item.program_name,
       }));
     } catch (error) {
       console.error('Error fetching data from Directus:', error);
       return [];
     }
+  };
+
+  useEffect(() => {
+    filterData();
+  }, [currentOption, filterTag, data]);
+
+  const filterData = () => {
+    let filtered = data;
+    if (currentOption !== 'all') {
+      filtered = filtered.filter(item => item.program.includes(currentOption));
+    }
+    if (filterTag !== 'all') {
+      filtered = filtered.filter(item => item.tags.includes(filterTag));
+    }
+    setFilteredData(filtered);
   };
 
   const handleOptionChange = (option) => {
@@ -72,11 +81,6 @@ function App() {
 
   const handleFilterChange = (tag) => {
     setFilterTag(tag);
-    if (tag === 'all') {
-      setFilteredData(data);
-    } else {
-      setFilteredData(data.filter(item => item.tags.includes(tag)));
-    }
   };
 
   const showModal = (imageSrc, imageName) => {
