@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import './App.css';
 
 const baseURL = process.env.REACT_APP_DIRECTUS_URL;
 
 function App() {
-  const [currentOption, setCurrentOption] = useState('FSD');
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [currentOption, setCurrentOption] = useState('all');
   const [filterTag, setFilterTag] = useState('all');
   const [modalData, setModalData] = useState({ isOpen: false, imageSrc: '', imageName: '' });
 
@@ -116,6 +115,9 @@ function App() {
   return (
     <div className="App">
       <div id="options">
+        <button id="all" onClick={() => handleOptionChange('all')} className={currentOption === 'all' ? 'active' : ''}>
+          All Programs
+        </button>
         <button id="FSD" onClick={() => handleOptionChange('FSD')} className={currentOption === 'FSD' ? 'active' : ''}>
           Fellowship Program in Software Development
         </button>
