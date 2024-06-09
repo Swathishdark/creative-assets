@@ -3,14 +3,14 @@ const fetch = require('node-fetch');
 const directusApiEndpoint = process.env.REACT_APP_DIRECTUS_API_ENDPOINT;
 
 module.exports = async (req, res) => {
-  const { token } = req.query;
+  const { token, program } = req.query;
 
   if (!token) {
     return res.status(400).json({ error: 'Token is required' });
   }
 
   try {
-    const response = await fetch(`${directusApiEndpoint}/items/success_stories?filter[status][_eq]=published`, {
+    const response = await fetch(`${directusApiEndpoint}/items/shareable_assets?filter[program_name][_contains]=${program}&filter[status][_eq]=published`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
