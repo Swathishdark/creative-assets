@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
-const baseURL = process.env.REACT_APP_DIRECTUS_API_ENDPOINT; // Using env variable for Directus URL
+const baseURL = process.env.REACT_APP_DIRECTUS_API_ENDPOINT;
 
 function App() {
   const [currentOption, setCurrentOption] = useState('FSD');
@@ -26,12 +26,11 @@ function App() {
   const getAuthToken = async () => {
     try {
       const response = await fetch('/api/get-token');
-      const data = await response.json();
-      if (response.ok) {
-        return data.token;
-      } else {
-        throw new Error(data.error);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+      const data = await response.json();
+      return data.token;
     } catch (error) {
       console.error('Error obtaining token:', error);
       return null;
@@ -48,6 +47,9 @@ function App() {
 
     try {
       const response = await fetch(`/api/fetch-content?token=${token}&program=${programFilter}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
       return data.map(item => ({
         imageName: item.asset_image,
