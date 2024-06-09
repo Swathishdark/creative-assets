@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
   console.log('Received request to get token');
   console.log('Directus API Endpoint:', directusApiEndpoint);
   console.log('Directus Username:', directusUsername);
-  console.log('Directus Password:', '*****'); // Don't log the actual password
+  // Do not log the password for security reasons
 
   try {
     const response = await fetch(`${directusApiEndpoint}/auth/login`, {
@@ -27,6 +27,7 @@ module.exports = async (req, res) => {
 
     if (!response.ok) {
       const errorText = await response.text();
+      console.error('Error response text:', errorText);
       throw new Error(`Failed to login: ${response.statusText} - ${errorText}`);
     }
 
