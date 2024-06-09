@@ -209,9 +209,6 @@ td img {
 
 .copy-content .tooltip, .hover-container .tooltip {
   position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
   white-space: nowrap;
 }
 
