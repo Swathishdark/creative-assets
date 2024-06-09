@@ -196,7 +196,6 @@ td img {
   border-radius: 5px;
   font-size: 14px;
   z-index: 1;
-  transform: translate(-50%, -150%);
   pointer-events: none;
 }
 
