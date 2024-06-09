@@ -112,6 +112,16 @@ function App() {
     }
   };
 
+  const handleDownloadImage = (e, imageSrc, imageName) => {
+    e.preventDefault();
+    const link = document.createElement('a');
+    link.href = imageSrc;
+    link.download = `${imageName}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="App">
       <div id="options">
@@ -163,7 +173,7 @@ function App() {
       {modalData.isOpen && (
         <div id="imageModal" className="modal open" onClick={closeModal}>
           <span id="closeModal" className="close" onClick={closeModal}>&times;</span>
-          <a id="downloadLink" href={modalData.imageSrc} download={modalData.imageName}>
+          <a id="downloadLink" href={modalData.imageSrc} download={modalData.imageName} onClick={(e) => handleDownloadImage(e, modalData.imageSrc, modalData.imageName)}>
             <img className="modal-content" id="modalImage" src={modalData.imageSrc} alt={modalData.imageName} />
           </a>
         </div>
