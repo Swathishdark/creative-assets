@@ -1,25 +1,23 @@
 body {
-  background-color: none;
+  background-color: #f4f4f9;
   margin: 0;
   padding: 0;
   font-family: 'Rubik', sans-serif;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Vertically center content */
-  height: 100vh; /* Full viewport height */
+  justify-content: center;
+  height: 100vh;
 }
 
 #options, #filterContainer {
-  position: absolute; /* Positioned absolutely to allow for initial centering */
-  top: 25%; /* Move buttons higher up */
-  width: 100%; /* Ensure full width */
-  transform: translateY(0); /* No need to adjust for initial centering */
-  transition: top 0.3s ease-in-out, transform 0.3s ease-in-out; /* Smooth transition for moving the buttons */
+  position: absolute;
+  top: 10%; /* Adjusted top position */
+  width: 100%;
   text-align: center;
 }
 
 #options button {
-  background-color: #02BF91;
+  background-color: #02BF91; /* Corrected background color */
   color: #004246;
   border: none;
   padding: 10px 20px;
@@ -32,66 +30,63 @@ body {
 }
 
 #options button:hover {
-  background-color: #29d3b2;
+  background-color: #2DF8C5;
   transform: scale(1.05);
 }
 
 #options button.active {
-  background-color: #2DF8C5; /* Change this color to your preference */
-  color: #003B3F; /* Change text color if needed */
+  background-color: #2DF8C5;
+  color: #003B3F;
 }
 
 #filterContainer {
-  margin-top: 20px; /* Add margin to create space between buttons and filter */
-  text-align: center;
+  margin-top: 20px;
 }
 
 #tagFilter {
   padding: 10px 20px;
   font-size: 14px;
   border-radius: 5px;
-  border: 2px solid none; /* Match the button color */
+  border: 2px solid #02BF91;
   background-color: white;
   cursor: pointer;
-  outline: none; /* Remove focus outline */
+  outline: none;
   transition: all 0.3s ease;
-  font-family: 'Rubik', sans-serif; /* Ensure Rubik font is applied */
+  font-family: 'Rubik', sans-serif;
   margin-top: 20px;
 }
 
 #tagFilter:hover {
-  background-color: #f0f0f0; /* Light grey for hover */
-  border-color: #02BF91; /* Brighter green on hover */
+  background-color: #f0f0f0;
+  border-color: #02BF91;
 }
 
 #tagFilter option:selected {
-  background-color: #cce8e4; /* A lighter shade for selected option */
+  background-color: #cce8e4;
 }
 
 #resetFilter {
-  display: inline-block; /* Ensure it's treated as an inline-level block container */
+  display: inline-block;
   padding: 8px 20px;
   font-size: 14px;
-  font-weight: bold; /* Make text bold */
+  font-weight: bold;
   border-radius: 5px;
-  border: 2px solid none;  
+  border: 2px solid #02BF91;
   background-color: #fff;
-  color: black;
+  color: #004246;
   cursor: pointer;
   font-family: 'Rubik', sans-serif;
-  margin-left: 10px; /* Space between filter and reset button */
-  text-shadow: none; /* Remove any text shadow if present */
-  box-shadow: none; /* Remove any box shadow if present */
+  margin-left: 10px;
   transition: background-color 0.3s;
 }
 
 #resetFilter:hover {
-  background-color: none; /* Darker shade for hover effect */
+  background-color: #2DF8C5;
 }
 
 #tableContainer {
-  margin-top: 5px;
-  padding-left: 0px; /* Add 10px padding on the left */
+  margin-top: 20px;
+  padding-left: 0px;
   padding-right: 8px;
   background-color: white;
   border-radius: 10px;
@@ -119,20 +114,20 @@ table {
   width: 100%;
   margin-bottom: 0;
   font-size: 12px;
-  border-collapse: separate; /* Use separate border collapsing */
-  border-spacing: 0; /* Remove spacing between cells */
-  border-radius: 10px; 
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 10px;
 }
 
 th, td {
   border: 1px solid #ddd;
   padding: 10px 15px;
   text-align: left;
-  border-radius: 10px; /* Rounded corners */
+  border-radius: 10px;
 }
 
 th {
-  background-image: linear-gradient(to right,#009378, #004246);
+  background-image: linear-gradient(to right, #009378, #004246);
   color: white;
   font-weight: normal;
   border-radius: 10px;
@@ -141,12 +136,6 @@ th {
 tr:nth-child(even) {
   background-color: #f2f2f2;
   border-radius: 10px;
-}
-
-tr:last-child .tooltip {
-  top: auto; /* Align top edge of tooltip with the bottom edge of the cell */
-  bottom: 100%; /* Move tooltip above the cell */
-  transform: translateX(-50%) translateY(0); /* Adjust the transformation */
 }
 
 td img {
@@ -167,17 +156,16 @@ td img {
   background-color: rgba(0, 0, 0, 0.6);
 }
 
+.modal.open {
+  display: block;
+}
+
 .modal-content {
   margin: 10% auto;
   display: block;
   width: 35%;
   max-width: 700px;
   border-radius: 10px;
-}
-
-.modal-content:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
 }
 
 .close {
@@ -228,7 +216,7 @@ td img {
 }
 
 .copy-content:hover {
-  background-color: #f0f0f0; /* Hover effect */
+  background-color: #f0f0f0;
 }
 
 .copy-content .tooltip {
@@ -250,24 +238,24 @@ td img {
 }
 
 .modal-download-button {
-  display: none; /* Initially hidden, shown when the modal is open */
+  display: none;
   position: absolute;
-  left: 50%; /* Center horizontally */
-  transform: translateX(-50%); /* Adjust for exact center alignment */
-  margin-top: -8%; /* Position below the image, adjust the value as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: -8%;
   padding: 10px 20px;
-  background-color: #4CAF50; /* Green background */
-  color: white; /* White text */
-  border-radius: 5px; /* Rounded corners */
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
   text-align: center;
   font-size: 16px;
-  cursor: pointer; /* Cursor changes to a hand symbol when hovered over */
-  border: 2px solid transparent; /* Transparent border */
-  transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
 .modal-download-button:hover {
-  background-color: white; /* White background on hover */
-  color: #4CAF50; /* Green text on hover */
-  border-color: #4CAF50; /* Green border on hover */
+  background-color: white;
+  color: #4CAF50;
+  border-color: #4CAF50;
 }
