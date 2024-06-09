@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
-const directusApiEndpoint = process.env.REACT_APP_DIRECTUS_API_ENDPOINT;
-const directusUsername = process.env.DIRECTUS_USERNAME;
+const directusApiEndpoint = process.env.REACT_APP_DIRECTUS_URL;
+const directusUsername = process.env.DIRECTUS_EMAIL;
 const directusPassword = process.env.DIRECTUS_PASSWORD;
 
 module.exports = async (req, res) => {
