@@ -15,7 +15,7 @@
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/creative-assets.git
+    git clone https://github.com/Ritwik-28/creative-assets.git
     cd creative-assets
     ```
 
@@ -30,7 +30,7 @@
    Create a `.env` file in the root directory and add the following environment variables:
 
     ```env
-    REACT_APP_DIRECTUS_URL=https://directus.crio.do
+    REACT_APP_DIRECTUS_URL=https://yourdirectus.instance.com
     DIRECTUS_EMAIL=your-email
     DIRECTUS_PASSWORD=your-password
     ```
