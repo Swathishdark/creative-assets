@@ -9,7 +9,7 @@ function App() {
   const [currentOption, setCurrentOption] = useState('all');
   const [filterTag, setFilterTag] = useState('all');
   const [modalData, setModalData] = useState({ isOpen: false, imageSrc: '', imageName: '' });
-  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+  const [tooltip, setTooltip] = useState({ visible: false, content: '', x: 0, y: 0 });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -119,20 +119,28 @@ function App() {
     const link = document.createElement('a');
     link.href = imageSrc;
     link.setAttribute('download', `${imageName}.jpg`);
+    link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
-  const handleMouseOver = (e) => {
-    const tooltip = e.target.querySelector('.tooltip');
-    if (tooltip) {
-      const rect = e.target.getBoundingClientRect();
-      setTooltipPosition({
-        top: e.clientY,
-        left: e.clientX,
-      });
-    }
+  const handleMouseMove = (e, content) => {
+    setTooltip({
+      visible: true,
+      content,
+      x: e.clientX,
+      y: e.clientY,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setTooltip({
+      visible: false,
+      content: '',
+      x: 0,
+      y: 0,
+    });
   };
 
   return (
@@ -169,13 +177,36 @@ function App() {
           <tbody>
             {filteredData.map((row, index) => (
               <tr key={index}>
-                <td className="hover-container" onMouseMove={handleMouseOver}>
+                <td
+                  className="hover-container"
+                  onMouseMove={(e) => handleMouseMove(e, 'Click to view')}
+                  onMouseLeave={handleMouseLeave}
+                >
                   <img src={row.image} alt={row.imageName} onClick={() => showModal(row.image, row.imageName)} />
-                  <span className="tooltip" style={{ top: tooltipPosition.top, left: tooltipPosition.left }}>Click to view</span>
+                  {tooltip.visible && (
+                    <span
+                      className="tooltip"
+                      style={{ top: tooltip.y + 10, left: tooltip.x + 10 }}
+                    >
+                      {tooltip.content}
+                    </span>
+                  )}
                 </td>
-                <td className="copy-content" onMouseMove={handleMouseOver} onClick={(e) => handleCopyContent(e, row.content, row.contentName)}>
+                <td
+                  className="copy-content"
+                  onMouseMove={(e) => handleMouseMove(e, 'Click to copy')}
+                  onMouseLeave={handleMouseLeave}
+                  onClick={(e) => handleCopyContent(e, row.content, row.contentName)}
+                >
                   <span className="content-text" data-content-name={row.contentName} dangerouslySetInnerHTML={{ __html: row.content }}></span>
-                  <span className="tooltip" style={{ top: tooltipPosition.top, left: tooltipPosition.left }}>Click to copy</span>
+                  {tooltip.visible && (
+                    <span
+                      className="tooltip"
+                      style={{ top: tooltip.y + 10, left: tooltip.x + 10 }}
+                    >
+                      {tooltip.content}
+                    </span>
+                  )}
                 </td>
                 <td>{row.tags.join(', ')}</td>
               </tr>
@@ -186,7 +217,12 @@ function App() {
       {modalData.isOpen && (
         <div id="imageModal" className="modal open" onClick={closeModal}>
           <span id="closeModal" className="close" onClick={closeModal}>&times;</span>
-          <a id="downloadLink" href={modalData.imageSrc} download={modalData.imageName} onClick={(e) => handleDownloadImage(e, modalData.imageSrc, modalData.imageName)}>
+          <a
+            id="downloadLink"
+            href={modalData.imageSrc}
+            download={modalData.imageName}
+            onClick={(e) => handleDownloadImage(e, modalData.imageSrc, modalData.imageName)}
+          >
             <img className="modal-content" id="modalImage" src={modalData.imageSrc} alt={modalData.imageName} />
           </a>
         </div>
