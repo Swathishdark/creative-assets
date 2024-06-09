@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
-const baseURL = process.env.REACT_APP_DIRECTUS_API_ENDPOINT;
+const baseURL = process.env.REACT_APP_DIRECTUS_URL;
 
 function App() {
   const [currentOption, setCurrentOption] = useState('FSD');
@@ -26,11 +26,12 @@ function App() {
   const getAuthToken = async () => {
     try {
       const response = await fetch('/api/get-token');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
       const data = await response.json();
-      return data.token;
+      if (response.ok) {
+        return data.token;
+      } else {
+        throw new Error(data.error);
+      }
     } catch (error) {
       console.error('Error obtaining token:', error);
       return null;
