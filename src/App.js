@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import './App.css';
 
 const baseURL = process.env.REACT_APP_DIRECTUS_URL;
@@ -114,15 +116,18 @@ function App() {
     }
   };
 
-  const handleDownloadImage = (e, imageSrc, imageName) => {
-    e.preventDefault();
+  const downloadImage = (url) => {
     const link = document.createElement('a');
-    link.href = imageSrc;
-    link.setAttribute('download', `${imageName}.jpg`);
-    link.style.display = 'none';
+    link.href = `${url}?download=true`;
+    link.download = url.substring(url.lastIndexOf('/') + 1);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  };
+
+  const handleDownloadImage = (e, imageSrc, imageName) => {
+    e.preventDefault();
+    downloadImage(imageSrc);
   };
 
   const handleMouseMove = (e, content) => {
@@ -182,7 +187,12 @@ function App() {
                   onMouseMove={(e) => handleMouseMove(e, 'Click to view')}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <img src={row.image} alt={row.imageName} onClick={() => showModal(row.image, row.imageName)} />
+                  <LazyLoadImage
+                    effect="blur"
+                    src={row.image}
+                    alt={row.imageName}
+                    onClick={() => showModal(row.image, row.imageName)}
+                  />
                   {tooltip.visible && (
                     <span
                       className="tooltip"
