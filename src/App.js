@@ -22,7 +22,7 @@ function App() {
         const result = await getData(token);
         setData(result);
         setFilteredData(result);
-        setPrograms([...new Set(result.map(item => item.program))]);
+        setPrograms([...new Set(result.flatMap(item => item.program))]);
         setTags([...new Set(result.flatMap(item => item.tags))]);
       }
     };
@@ -56,8 +56,8 @@ function App() {
         image: `${baseURL}/assets/${item.asset_image}`,
         contentName: item.asset_image,
         content: item.asset_message.replace(/\r\n/g, '<br>'),
-        tags: item.transition_type ? item.transition_type.split(', ') : [],
-        program: item.program_name,
+        tags: Array.isArray(item.transition_type) ? item.transition_type : [],
+        program: Array.isArray(item.program_name) ? item.program_name : [],
       }));
     } catch (error) {
       console.error('Error fetching data from Directus:', error);
@@ -68,7 +68,7 @@ function App() {
   const filterData = useCallback(() => {
     let filtered = data;
     if (currentOption !== 'all') {
-      filtered = filtered.filter(item => item.program === currentOption);
+      filtered = filtered.filter(item => item.program.includes(currentOption));
     }
     if (filterTag !== 'all') {
       filtered = filtered.filter(item => item.tags.includes(filterTag));
