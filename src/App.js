@@ -93,8 +93,10 @@ function App() {
     setModalData({ isOpen: true, imageSrc, imageName });
   };
 
-  const closeModal = () => {
-    setModalData({ isOpen: false, imageSrc: '', imageName: '' });
+  const closeModal = (e) => {
+    if (e.target.id === 'imageModal' || e.target.id === 'closeModal') {
+      setModalData({ isOpen: false, imageSrc: '', imageName: '' });
+    }
   };
 
   const handleCopyContent = (e, content, contentName) => {
@@ -247,14 +249,23 @@ function App() {
       {modalData.isOpen && (
         <div id="imageModal" className="modal open" onClick={closeModal}>
           <span id="closeModal" className="close" onClick={closeModal}>&times;</span>
-          <a
-            id="downloadLink"
-            href={modalData.imageSrc}
-            download={modalData.imageName}
-            onClick={(e) => handleDownloadImage(e, modalData.imageSrc, modalData.imageName)}
-          >
-            <img className="modal-content" id="modalImage" src={modalData.imageSrc} alt={modalData.imageName} />
-          </a>
+          <div id="modalContent" onClick={(e) => e.stopPropagation()}>
+            <a
+              id="downloadLink"
+              href={modalData.imageSrc}
+              download={modalData.imageName}
+              onClick={(e) => handleDownloadImage(e, modalData.imageSrc, modalData.imageName)}
+            >
+              <LazyLoadImage
+                className="modal-content"
+                id="modalImage"
+                src={modalData.imageSrc}
+                alt={modalData.imageName}
+                effect="blur"
+              />
+              <div className="download-tooltip">Click to download</div>
+            </a>
+          </div>
         </div>
       )}
     </div>
