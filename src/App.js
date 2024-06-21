@@ -23,7 +23,7 @@ function App() {
         setData(result);
         setFilteredData(result);
         setPrograms([...new Set(result.map(item => item.program))]);
-        setTags([...new Set(result.map(item => item.tags).flat())]);
+        setTags([...new Set(result.flatMap(item => item.tags))]);
       }
     };
     fetchData();
@@ -56,7 +56,7 @@ function App() {
         image: `${baseURL}/assets/${item.asset_image}`,
         contentName: item.asset_image,
         content: item.asset_message.replace(/\r\n/g, '<br>'),
-        tags: item.transition_type.split(', '),
+        tags: item.transition_type ? item.transition_type.split(', ') : [],
         program: item.program_name,
       }));
     } catch (error) {
@@ -68,7 +68,7 @@ function App() {
   const filterData = useCallback(() => {
     let filtered = data;
     if (currentOption !== 'all') {
-      filtered = filtered.filter(item => item.program.includes(currentOption));
+      filtered = filtered.filter(item => item.program === currentOption);
     }
     if (filterTag !== 'all') {
       filtered = filtered.filter(item => item.tags.includes(filterTag));
