@@ -93,10 +93,8 @@ function App() {
     setModalData({ isOpen: true, imageSrc, imageName });
   };
 
-  const closeModal = (e) => {
-    if (e.target.id === 'imageModal' || e.target.id === 'closeModal') {
-      setModalData({ isOpen: false, imageSrc: '', imageName: '' });
-    }
+  const closeModal = () => {
+    setModalData({ isOpen: false, imageSrc: '', imageName: '' });
   };
 
   const handleCopyContent = (e, content, contentName) => {
@@ -137,7 +135,7 @@ function App() {
   };
 
   const handleMouseMove = (e, content) => {
-    const tooltipWidth = 150; // Adjust the tooltip width if necessary
+    const tooltipWidth = 100; // Approximate width of the tooltip
     const xOffset = 15; // Offset for positioning tooltip
     const yOffset = 15;
     let x = e.clientX + xOffset;
@@ -249,16 +247,14 @@ function App() {
       {modalData.isOpen && (
         <div id="imageModal" className="modal open" onClick={closeModal}>
           <span id="closeModal" className="close" onClick={closeModal}>&times;</span>
-          <div id="modalContent" onClick={(e) => e.stopPropagation()}>
-            <LazyLoadImage
-              className="modal-content"
-              id="modalImage"
-              src={modalData.imageSrc}
-              alt={modalData.imageName}
-              effect="blur"
-            />
-            <span className="modal-download-button" onClick={(e) => handleDownloadImage(e, modalData.imageSrc, modalData.imageName)}>Click to download</span>
-          </div>
+          <a
+            id="downloadLink"
+            href={modalData.imageSrc}
+            download={modalData.imageName}
+            onClick={(e) => handleDownloadImage(e, modalData.imageSrc, modalData.imageName)}
+          >
+            <img className="modal-content" id="modalImage" src={modalData.imageSrc} alt={modalData.imageName} />
+          </a>
         </div>
       )}
     </div>
