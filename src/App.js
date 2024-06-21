@@ -8,6 +8,8 @@ const baseURL = process.env.REACT_APP_DIRECTUS_URL;
 function App() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [programs, setPrograms] = useState([]);
+  const [tags, setTags] = useState([]);
   const [currentOption, setCurrentOption] = useState('all');
   const [filterTag, setFilterTag] = useState('all');
   const [modalData, setModalData] = useState({ isOpen: false, imageSrc: '', imageName: '' });
@@ -20,6 +22,8 @@ function App() {
         const result = await getData(token);
         setData(result);
         setFilteredData(result);
+        setPrograms([...new Set(result.map(item => item.program))]);
+        setTags([...new Set(result.map(item => item.tags).flat())]);
       }
     };
     fetchData();
@@ -52,7 +56,7 @@ function App() {
         image: `${baseURL}/assets/${item.asset_image}`,
         contentName: item.asset_image,
         content: item.asset_message.replace(/\r\n/g, '<br>'),
-        tags: item.transition_type,
+        tags: item.transition_type.split(', '),
         program: item.program_name,
       }));
     } catch (error) {
@@ -154,16 +158,19 @@ function App() {
         <button id="all" onClick={() => handleOptionChange('all')} className={currentOption === 'all' ? 'active' : ''}>
           All Programs
         </button>
-        <button id="FSD" onClick={() => handleOptionChange('FSD')} className={currentOption === 'FSD' ? 'active' : ''}>
-          Fellowship Program in Software Development
-        </button>
-        <button id="QA" onClick={() => handleOptionChange('QA')} className={currentOption === 'QA' ? 'active' : ''}>
-          Fellowship Program in QA Automation
-        </button>
+        {programs.map(program => (
+          <button
+            key={program}
+            onClick={() => handleOptionChange(program)}
+            className={currentOption === program ? 'active' : ''}
+          >
+            {program}
+          </button>
+        ))}
         <div id="filterContainer">
           <select id="tagFilter" value={filterTag} onChange={(e) => handleFilterChange(e.target.value)}>
             <option value="all">All Tags</option>
-            {['Premium', 'Advanced', 'Engagement/DNP', 'Post Nurture Engagement', 'Pre Nurture Engagement', 'Educative', 'User Asked'].map(tag => (
+            {tags.map(tag => (
               <option key={tag} value={tag}>{tag}</option>
             ))}
           </select>
@@ -193,7 +200,7 @@ function App() {
                     alt={row.imageName}
                     onClick={() => showModal(row.image, row.imageName)}
                   />
-                  {tooltip.visible && (
+                  {tooltip.visible && tooltip.content === 'Click to view' && (
                     <span
                       className="tooltip"
                       style={{ top: tooltip.y + 10, left: tooltip.x + 10 }}
@@ -209,7 +216,7 @@ function App() {
                   onClick={(e) => handleCopyContent(e, row.content, row.contentName)}
                 >
                   <span className="content-text" data-content-name={row.contentName} dangerouslySetInnerHTML={{ __html: row.content }}></span>
-                  {tooltip.visible && (
+                  {tooltip.visible && tooltip.content === 'Click to copy' && (
                     <span
                       className="tooltip"
                       style={{ top: tooltip.y + 10, left: tooltip.x + 10 }}
