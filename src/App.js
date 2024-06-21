@@ -137,7 +137,7 @@ function App() {
   };
 
   const handleMouseMove = (e, content) => {
-    const tooltipWidth = 100; // Approximate width of the tooltip
+    const tooltipWidth = 150; // Adjust the tooltip width if necessary
     const xOffset = 15; // Offset for positioning tooltip
     const yOffset = 15;
     let x = e.clientX + xOffset;
@@ -218,7 +218,7 @@ function App() {
                   {tooltip.visible && tooltip.content === 'Click to view' && (
                     <span
                       className="tooltip"
-                      style={{ top: tooltip.x, left: tooltip.y }}
+                      style={{ top: tooltip.y, left: tooltip.x }}
                     >
                       {tooltip.content}
                     </span>
@@ -234,7 +234,7 @@ function App() {
                   {tooltip.visible && tooltip.content === 'Click to copy' && (
                     <span
                       className="tooltip"
-                      style={{ top: tooltip.x, left: tooltip.y }}
+                      style={{ top: tooltip.y, left: tooltip.x }}
                     >
                       {tooltip.content}
                     </span>
