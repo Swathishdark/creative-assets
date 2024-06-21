@@ -1,5 +1,5 @@
 body {
-  background-color: #f4f4f9;
+  background-color: #004145;
   margin: 0;
   padding: 0;
   font-family: 'Rubik', sans-serif;
@@ -25,7 +25,7 @@ body {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 10px; /* Add margin to separate from the table */
+  margin-bottom: 10px; /* Adjust margin to reduce padding */
 }
 
 #options button {
@@ -55,7 +55,7 @@ body {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 10px; /* Add margin to separate from the table */
+  margin-bottom: 10px; /* Adjust margin to reduce padding */
 }
 
 #tagFilter {
@@ -100,8 +100,8 @@ body {
 }
 
 #tableContainer {
-  margin-top: 160px; /* Ensure the table is below the fixed filters and buttons */
-  padding: 10px;
+  margin-top: 120px; /* Ensure the table is below the fixed filters and buttons */
+  padding: 10px 10px 0; /* Adjust padding to reduce space */
   background-color: white;
   border-radius: 10px;
   max-height: 400px;

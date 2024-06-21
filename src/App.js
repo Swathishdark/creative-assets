@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import './App.css';
@@ -13,7 +13,7 @@ function App() {
   const [currentOption, setCurrentOption] = useState('all');
   const [filterTag, setFilterTag] = useState('all');
   const [modalData, setModalData] = useState({ isOpen: false, imageSrc: '', imageName: '' });
-  const [tooltip, setTooltip] = useState({ visible: false, content: '', x: 0, y: 0 });
+  const modalTooltipRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -134,35 +134,19 @@ function App() {
     downloadImage(imageSrc);
   };
 
-  const handleMouseMove = (e, content) => {
-    const tooltipWidth = 100; // Approximate width of the tooltip
-    const xOffset = 15; // Offset for positioning tooltip
-    const yOffset = 15;
-    let x = e.clientX + xOffset;
-    let y = e.clientY + yOffset;
-
-    if (x + tooltipWidth > window.innerWidth) {
-      x = e.clientX - tooltipWidth - xOffset;
+  const handleMouseMove = (e, container) => {
+    const tooltip = container.querySelector('.tooltip');
+    if (tooltip) {
+      tooltip.style.left = `${e.clientX - container.getBoundingClientRect().left}px`;
+      tooltip.style.top = `${e.clientY - container.getBoundingClientRect().top}px`;
     }
-    if (y + 20 > window.innerHeight) {
-      y = e.clientY - 20 - yOffset;
-    }
-
-    setTooltip({
-      visible: true,
-      content,
-      x,
-      y,
-    });
   };
 
-  const handleMouseLeave = () => {
-    setTooltip({
-      visible: false,
-      content: '',
-      x: 0,
-      y: 0,
-    });
+  const handleModalMouseMove = (e) => {
+    if (modalTooltipRef.current) {
+      modalTooltipRef.current.style.left = `${e.clientX - e.currentTarget.getBoundingClientRect().left}px`;
+      modalTooltipRef.current.style.top = `${e.clientY - e.currentTarget.getBoundingClientRect().top}px`;
+    }
   };
 
   return (
@@ -206,8 +190,8 @@ function App() {
               <tr key={index}>
                 <td
                   className="hover-container"
-                  onMouseMove={(e) => handleMouseMove(e, 'Click to view')}
-                  onMouseLeave={handleMouseLeave}
+                  onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
+                  onMouseLeave={() => handleMouseLeave(e.currentTarget)}
                 >
                   <LazyLoadImage
                     effect="blur"
@@ -215,30 +199,16 @@ function App() {
                     alt={row.imageName}
                     onClick={() => showModal(row.image, row.imageName)}
                   />
-                  {tooltip.visible && tooltip.content === 'Click to view' && (
-                    <span
-                      className="tooltip"
-                      style={{ top: tooltip.y, left: tooltip.x }}
-                    >
-                      {tooltip.content}
-                    </span>
-                  )}
+                  <span className="tooltip">Click to view</span>
                 </td>
                 <td
                   className="copy-content"
-                  onMouseMove={(e) => handleMouseMove(e, 'Click to copy')}
-                  onMouseLeave={handleMouseLeave}
+                  onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
+                  onMouseLeave={() => handleMouseLeave(e.currentTarget)}
                   onClick={(e) => handleCopyContent(e, row.content, row.contentName)}
                 >
                   <span className="content-text" data-content-name={row.contentName} dangerouslySetInnerHTML={{ __html: row.content }}></span>
-                  {tooltip.visible && tooltip.content === 'Click to copy' && (
-                    <span
-                      className="tooltip"
-                      style={{ top: tooltip.y, left: tooltip.x }}
-                    >
-                      {tooltip.content}
-                    </span>
-                  )}
+                  <span className="tooltip">Click to copy</span>
                 </td>
                 <td>{row.tags.join(', ')}</td>
               </tr>
@@ -247,7 +217,7 @@ function App() {
         </table>
       </div>
       {modalData.isOpen && (
-        <div id="imageModal" className="modal open" onClick={closeModal}>
+        <div id="imageModal" className="modal open" onMouseMove={handleModalMouseMove} onClick={closeModal}>
           <span id="closeModal" className="close" onClick={closeModal}>&times;</span>
           <a
             id="downloadLink"
@@ -256,6 +226,7 @@ function App() {
             onClick={(e) => handleDownloadImage(e, modalData.imageSrc, modalData.imageName)}
           >
             <img className="modal-content" id="modalImage" src={modalData.imageSrc} alt={modalData.imageName} />
+            <span className="tooltip" ref={modalTooltipRef}>Click to download</span>
           </a>
         </div>
       )}
