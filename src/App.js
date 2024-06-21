@@ -218,7 +218,7 @@ function App() {
                   {tooltip.visible && tooltip.content === 'Click to view' && (
                     <span
                       className="tooltip"
-                      style={{ top: tooltip.y, left: tooltip.x }}
+                      style={{ top: tooltip.x, left: tooltip.y }}
                     >
                       {tooltip.content}
                     </span>
@@ -234,7 +234,7 @@ function App() {
                   {tooltip.visible && tooltip.content === 'Click to copy' && (
                     <span
                       className="tooltip"
-                      style={{ top: tooltip.y, left: tooltip.x }}
+                      style={{ top: tooltip.x, left: tooltip.y }}
                     >
                       {tooltip.content}
                     </span>
@@ -250,21 +250,14 @@ function App() {
         <div id="imageModal" className="modal open" onClick={closeModal}>
           <span id="closeModal" className="close" onClick={closeModal}>&times;</span>
           <div id="modalContent" onClick={(e) => e.stopPropagation()}>
-            <a
-              id="downloadLink"
-              href={modalData.imageSrc}
-              download={modalData.imageName}
-              onClick={(e) => handleDownloadImage(e, modalData.imageSrc, modalData.imageName)}
-            >
-              <LazyLoadImage
-                className="modal-content"
-                id="modalImage"
-                src={modalData.imageSrc}
-                alt={modalData.imageName}
-                effect="blur"
-              />
-              <div className="download-tooltip">Click to download</div>
-            </a>
+            <LazyLoadImage
+              className="modal-content"
+              id="modalImage"
+              src={modalData.imageSrc}
+              alt={modalData.imageName}
+              effect="blur"
+            />
+            <span className="modal-download-button" onClick={(e) => handleDownloadImage(e, modalData.imageSrc, modalData.imageName)}>Click to download</span>
           </div>
         </div>
       )}
