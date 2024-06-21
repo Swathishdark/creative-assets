@@ -199,7 +199,7 @@ function App() {
                 <td
                   className="hover-container"
                   onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
-                  onMouseLeave={() => handleMouseLeave(e.currentTarget)}
+                  onMouseLeave={(e) => handleMouseLeave(e.currentTarget)}
                 >
                   <LazyLoadImage
                     effect="blur"
@@ -212,7 +212,7 @@ function App() {
                 <td
                   className="copy-content"
                   onMouseMove={(e) => handleMouseMove(e, e.currentTarget)}
-                  onMouseLeave={() => handleMouseLeave(e.currentTarget)}
+                  onMouseLeave={(e) => handleMouseLeave(e.currentTarget)}
                   onClick={(e) => handleCopyContent(e, row.content, row.contentName)}
                 >
                   <span className="content-text" data-content-name={row.contentName} dangerouslySetInnerHTML={{ __html: row.content }}></span>
