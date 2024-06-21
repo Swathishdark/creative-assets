@@ -142,6 +142,14 @@ function App() {
     }
   };
 
+  const handleMouseLeave = (container) => {
+    const tooltip = container.querySelector('.tooltip');
+    if (tooltip) {
+      tooltip.style.left = '-9999px';
+      tooltip.style.top = '-9999px';
+    }
+  };
+
   const handleModalMouseMove = (e) => {
     if (modalTooltipRef.current) {
       modalTooltipRef.current.style.left = `${e.clientX - e.currentTarget.getBoundingClientRect().left}px`;
