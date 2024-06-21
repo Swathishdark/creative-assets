@@ -167,19 +167,21 @@ function App() {
 
   return (
     <div className="App">
-      <div id="options">
-        <button id="all" onClick={() => handleOptionChange('all')} className={currentOption === 'all' ? 'active' : ''}>
-          All Programs
-        </button>
-        {programs.map(program => (
-          <button
-            key={program}
-            onClick={() => handleOptionChange(program)}
-            className={currentOption === program ? 'active' : ''}
-          >
-            {program}
+      <div id="options-container">
+        <div id="options">
+          <button id="all" onClick={() => handleOptionChange('all')} className={currentOption === 'all' ? 'active' : ''}>
+            All Programs
           </button>
-        ))}
+          {programs.map(program => (
+            <button
+              key={program}
+              onClick={() => handleOptionChange(program)}
+              className={currentOption === program ? 'active' : ''}
+            >
+              {program}
+            </button>
+          ))}
+        </div>
         <div id="filterContainer">
           <select id="tagFilter" value={filterTag} onChange={(e) => handleFilterChange(e.target.value)}>
             <option value="all">All Tags</option>
