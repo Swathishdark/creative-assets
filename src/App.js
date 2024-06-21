@@ -135,11 +135,18 @@ function App() {
   };
 
   const handleMouseMove = (e, content) => {
+    const tooltipWidth = 150; // Adjust this value based on your tooltip width
+    const tooltipHeight = 40; // Adjust this value based on your tooltip height
+    const xOffset = 10; // Horizontal offset from cursor
+    const yOffset = 10; // Vertical offset from cursor
+    const x = e.clientX + xOffset;
+    const y = e.clientY + yOffset;
+
     setTooltip({
       visible: true,
       content,
-      x: e.clientX,
-      y: e.clientY,
+      x: x + tooltipWidth > window.innerWidth ? x - tooltipWidth - xOffset * 2 : x,
+      y: y + tooltipHeight > window.innerHeight ? y - tooltipHeight - yOffset * 2 : y,
     });
   };
 
@@ -203,7 +210,7 @@ function App() {
                   {tooltip.visible && tooltip.content === 'Click to view' && (
                     <span
                       className="tooltip"
-                      style={{ top: tooltip.y + 10, left: tooltip.x + 10 }}
+                      style={{ top: tooltip.y + 'px', left: tooltip.x + 'px' }}
                     >
                       {tooltip.content}
                     </span>
@@ -219,7 +226,7 @@ function App() {
                   {tooltip.visible && tooltip.content === 'Click to copy' && (
                     <span
                       className="tooltip"
-                      style={{ top: tooltip.y + 10, left: tooltip.x + 10 }}
+                      style={{ top: tooltip.y + 'px', left: tooltip.x + 'px' }}
                     >
                       {tooltip.content}
                     </span>
