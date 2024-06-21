@@ -86,8 +86,7 @@ body {
 
 #tableContainer {
   margin-top: 20px;
-  padding-left: 0px;
-  padding-right: 8px;
+  padding: 0 8px;
   background-color: white;
   border-radius: 10px;
   max-height: 400px;
@@ -202,6 +201,7 @@ td img:hover {
   font-size: 14px;
   z-index: 1;
   pointer-events: none;
+  white-space: nowrap;
 }
 
 .hover-container:hover .tooltip {
@@ -214,7 +214,6 @@ td img:hover {
 
 .copy-content .tooltip, .hover-container .tooltip {
   position: absolute;
-  white-space: nowrap;
 }
 
 .copy-content {

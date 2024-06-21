@@ -135,13 +135,24 @@ function App() {
   };
 
   const handleMouseMove = (e, content) => {
+    const tooltipWidth = 100; // Approximate width of the tooltip
     const xOffset = 15; // Offset for positioning tooltip
     const yOffset = 15;
+    let x = e.clientX + xOffset;
+    let y = e.clientY + yOffset;
+
+    if (x + tooltipWidth > window.innerWidth) {
+      x = e.clientX - tooltipWidth - xOffset;
+    }
+    if (y + 20 > window.innerHeight) {
+      y = e.clientY - 20 - yOffset;
+    }
+
     setTooltip({
       visible: true,
       content,
-      x: e.clientX + xOffset,
-      y: e.clientY + yOffset,
+      x,
+      y,
     });
   };
 
