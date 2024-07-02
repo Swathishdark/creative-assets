@@ -1,5 +1,4 @@
 /* Updated App.css */
-
 body {
   background-color: #f4f4f9;
   margin: 0;
@@ -90,6 +89,7 @@ body {
 }
 
 #tableContainer {
+  position: fixed;
   margin-top: 100px; /* Ensure there is space for the fixed filter */
   padding-left: 0px;
   padding-right: 8px;
@@ -140,7 +140,7 @@ th {
   border-radius: 10px;
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 100; /* Ensure a higher z-index to keep it on top */
 }
 
 tr:nth-child(even) {
@@ -204,6 +204,9 @@ td img {
   z-index: 1;
   pointer-events: none;
   white-space: nowrap;
+  bottom: -30px; /* Adjust this value to create space between cursor and tooltip */
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .copy-content:hover .tooltip,
@@ -219,7 +222,7 @@ td img {
 .copy-content .tooltip {
   display: none;
   position: absolute;
-  bottom: -25px;
+  bottom: -30px; /* Adjust this value to create space between cursor and tooltip */
   left: 50%;
   transform: translateX(-50%);
   background-color: black;

@@ -1,5 +1,3 @@
-/* Updated App.js */
-
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
@@ -136,6 +134,7 @@ function App() {
   };
 
   const handleDownloadImage = (e, imageSrc, imageName) => {
+    e.stopPropagation(); // Prevent the modal from closing
     e.preventDefault();
     downloadImage(imageSrc);
   };
@@ -153,13 +152,6 @@ function App() {
     if (tooltip) {
       tooltip.style.left = '-9999px';
       tooltip.style.top = '-9999px';
-    }
-  };
-
-  const handleModalMouseMove = (e) => {
-    if (modalTooltipRef.current) {
-      modalTooltipRef.current.style.left = `${e.clientX - e.currentTarget.getBoundingClientRect().left}px`;
-      modalTooltipRef.current.style.top = `${e.clientY - e.currentTarget.getBoundingClientRect().top}px`;
     }
   };
 
@@ -231,7 +223,7 @@ function App() {
         </table>
       </div>
       {modalData.isOpen && (
-        <div id="imageModal" className="modal open" onMouseMove={handleModalMouseMove} onClick={closeModal}>
+        <div id="imageModal" className="modal open" onClick={closeModal}>
           <span id="closeModal" className="close" onClick={closeModal}>&times;</span>
           <a
             id="downloadLink"
@@ -239,7 +231,7 @@ function App() {
             download={modalData.imageName}
             onClick={(e) => handleDownloadImage(e, modalData.imageSrc, modalData.imageName)}
           >
-            <img className="modal-content" id="modalImage" src={modalData.imageSrc} alt={modalData.imageName} />
+            <img className="modal-content" id="modalImage" src={modalData.imageSrc} alt={modalData.imageName} onClick={(e) => e.stopPropagation()} />
             <span className="tooltip" ref={modalTooltipRef}>Click to download</span>
           </a>
         </div>
