@@ -194,7 +194,6 @@ td img {
 }
 
 .tooltip {
-  display: none;
   position: absolute;
   background-color: black;
   color: white;
@@ -204,9 +203,9 @@ td img {
   z-index: 1;
   pointer-events: none;
   white-space: nowrap;
-  bottom: -30px; /* Adjust this value to create space between cursor and tooltip */
-  left: 50%;
-  transform: translateX(-50%);
+  left: -9999px;
+  top: -9999px;
+  transition: left 0.1s, top 0.1s; /* Smooth transition for tooltip movement */
 }
 
 .copy-content:hover .tooltip,

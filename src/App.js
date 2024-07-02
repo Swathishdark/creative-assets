@@ -4,6 +4,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import './App.css';
 
 const baseURL = process.env.REACT_APP_DIRECTUS_URL;
+const googleScriptURL = 'https://script.google.com/macros/s/AKfycby-yCRzC8xPnd2ai50Owq0k9EwqUB30NvHAP3vpFLd2lUz1H6zRnwVaPwRwcis6-vR6/exec'; // Replace with your Google Apps Script URL
 
 function App() {
   const [data, setData] = useState([]);
@@ -80,13 +81,34 @@ function App() {
     filterData();
   }, [currentOption, filterTag, data, filterData]);
 
+  const logFilterClick = (program, tag) => {
+    const timestamp = new Date().toISOString();
+    console.log(`Filter click logged: Program - ${program}, Tag - ${tag}, Timestamp - ${timestamp}`);
+    // Send this data to your Google Apps Script
+    fetch(googleScriptURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ program, tag, timestamp }),
+    }).then(response => {
+      if (!response.ok) {
+        console.error('Failed to log filter click');
+      }
+    }).catch(error => {
+      console.error('Error logging filter click:', error);
+    });
+  };
+
   const handleOptionChange = (option) => {
     setCurrentOption(option);
     setFilterTag('all');
+    logFilterClick(option, 'all');
   };
 
   const handleFilterChange = (tag) => {
     setFilterTag(tag);
+    logFilterClick(currentOption, tag);
   };
 
   const showModal = (imageSrc, imageName) => {
@@ -142,8 +164,8 @@ function App() {
   const handleMouseMove = (e, container) => {
     const tooltip = container.querySelector('.tooltip');
     if (tooltip) {
-      tooltip.style.left = `${e.clientX - container.getBoundingClientRect().left}px`;
-      tooltip.style.top = `${e.clientY - container.getBoundingClientRect().top}px`;
+      tooltip.style.left = `${e.clientX - container.getBoundingClientRect().left + 10}px`; // Added offset for better position
+      tooltip.style.top = `${e.clientY - container.getBoundingClientRect().top + 10}px`; // Added offset for better position
     }
   };
 
